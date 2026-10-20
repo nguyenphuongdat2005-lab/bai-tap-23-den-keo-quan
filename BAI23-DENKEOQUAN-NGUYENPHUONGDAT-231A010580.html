@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài Tập 23 - Đèn Kéo Quân 3D</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: #0d0d11;
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .header-info {
+      position: absolute;
+      top: 20px;
+      text-align: center;
+      z-index: 10;
+    }
+    .header-info h2 {
+      color: #ff3366;
+      margin-bottom: 5px;
+    }
+    .header-info p {
+      color: #aaa;
+    }
+
+    /* Khung nhìn 3D */
+    .stage {
+      width: 100%;
+      height: 400px;
+      perspective: 1000px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Đèn kéo quân */
+    .carousel {
+      width: 200px;
+      height: 260px;
+      position: relative;
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
+
+    /* Mỗi mặt đèn */
+    .face {
+      position: absolute;
+      width: 200px;
+      height: 260px;
+      border: 3px solid #ff3366;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(255, 51, 102, 0.5);
+      background: #1a1a24;
+      transition: transform 0.3s, filter 0.3s;
+    }
+
+    .face img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .face:hover {
+      filter: brightness(1.2);
+    }
+
+    .guide-text {
+      position: absolute;
+      bottom: 30px;
+      color: #888;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-info">
+    <h2>BÀI TẬP 23: ĐÈN KÉO QUÂN 3D</h2>
+    <p>Sinh viên thực hiện: NGUYỄN PHƯƠNG ĐẠT | MSSV: [Điền MSSV]</p>
+  </div>
+
+  <div class="stage">
+    <div class="carousel" id="carousel">
+      <!-- Link 6 ảnh demo cho Đèn kéo quân 3D -->
+<div class="face"><img src="https://picsum.photos/id/1015/200/260" alt="Ảnh 1"></div>
+<div class="face"><img src="https://picsum.photos/id/1025/200/260" alt="Ảnh 2"></div>
+<div class="face"><img src="https://picsum.photos/id/1039/200/260" alt="Ảnh 3"></div>
+<div class="face"><img src="https://picsum.photos/id/1048/200/260" alt="Ảnh 4"></div>
+<div class="face"><img src="https://picsum.photos/id/1062/200/260" alt="Ảnh 5"></div>
+<div class="face"><img src="https://picsum.photos/id/1074/200/260" alt="Ảnh 6"></div>
+    </div>
+  </div>
+
+  <div class="guide-text">
+    💡 Rê chuột vào ảnh để dừng đèn - Rê chuột ra ngoài để tiếp tục quay
+  </div>
+
+  <script>
+    const carousel = document.getElementById('carousel');
+    const faces = document.querySelectorAll('.face');
+    const totalFaces = faces.length;
+    const radius = 220; // Bán kính vòng tròn 3D
+    let angle = 0;
+    let isPaused = false;
+    let animationFrameId;
+
+    // Sắp xếp 6 mặt thành hình lục giác trong không gian 3D
+    faces.forEach((face, index) => {
+      const faceAngle = (360 / totalFaces) * index;
+      face.style.transform = `rotateY(${faceAngle}deg) translateZ(${radius}px)`;
+    });
+
+    // Hàm quay đèn kéo quân bằng JavaScript
+    function rotateCarousel() {
+      if (!isPaused) {
+        angle += 0.5; // Tốc độ quay
+        carousel.style.transform = `rotateY(${angle}deg)`;
+      }
+      animationFrameId = requestAnimationFrame(rotateCarousel);
+    }
+
+    // Sự kiện Rê chuột vào => Dừng quay
+    carousel.addEventListener('mouseenter', () => {
+      isPaused = true;
+    });
+
+    // Sự kiện Rê chuột ra => Tiếp tục quay
+    carousel.addEventListener('mouseleave', () => {
+      isPaused = false;
+    });
+
+    // Chạy hiệu ứng quay
+    rotateCarousel();
+  </script>
+</body>
+</html>
